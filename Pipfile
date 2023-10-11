@@ -7,5 +7,6 @@ name = "pypi"
 streamlit = "*"
 gspread = "*"
 oauth2client = "*"
+pydrive2 = "*"
 
 [dev-packages]
