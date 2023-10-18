@@ -23,7 +23,7 @@ def login_with_service_account():
 gauth = login_with_service_account()
 drive = GoogleDrive(gauth)
 
-folder_id = "1gSgIXqa9u9a9RckeZzEPezi5v_GRKQFx"
+folder_id = ""
 
 query_str = "\'" + folder_id + "\'" + " in parents and trashed=false"    
 
