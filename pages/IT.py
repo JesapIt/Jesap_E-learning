@@ -41,6 +41,7 @@ data = worksheet.get_all_values()
 for row in data:
     if row[1].lower() == servizio.lower() and row[2] == "tenere":
         st.write("Titolo:", row[0])
+        st.video(row[4])
         
 
 
