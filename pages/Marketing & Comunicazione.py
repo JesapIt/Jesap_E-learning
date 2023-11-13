@@ -40,7 +40,7 @@ data = worksheet.get_all_values()
 
 for row in data:
     if row[1].lower() == servizio.lower() and row[2] == "tenere":
-        st.write("Titolo:", row[0])
+        st.markdown(f"<h1 style='text-align: center; font-size: 36px;'>{row[0]}</h1>", unsafe_allow_html=True)
         st.video(row[4])
 
 
