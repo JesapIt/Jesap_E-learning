@@ -45,26 +45,11 @@ sht = client.open_by_url(link_data)
 worksheet = sht.sheet1
 data = worksheet.get_all_values()
 
-CLIENT_ID = '615937050302-90srrtrnao4pliqjlfcem2t7tcimo94a.apps.googleusercontent.com'
-CLIENT_SECRET = 'GOCSPX-YDEmo3zeaTIJZVFSS96VCjyq7DdY'
-SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
-
-# Authenticate the user and obtain credentials
-flow = InstalledAppFlow.from_client_secrets_file("pages\google-secrets.json", scopes=SCOPES)
-credentials = flow.run_local_server(port=0)
-youtube = build('youtube', 'v3', credentials=credentials)
-'''
 for row in data:
     if len(row) >= 3 and row[1].lower() == servizio.lower() and row[2] == "tenere":
         st.markdown(f"<h1 style='text-align: center; font-size: 36px;'>{row[0]}</h1>", unsafe_allow_html=True)
-        try:
-            video_id = 'aNJDQq6yYxI'
-            video_response = youtube.videos().list(part='player', id=video_id).execute()
-            video_url = video_response['items'][0]['player']['embedHtml']
-            st.markdown(video_url, unsafe_allow_html=True)
-        except HttpError as e:
-            st.error(f'An error occurred: {e}')
-'''
+        st.video(row[4])
+
 
 
 
