@@ -8,5 +8,6 @@ streamlit = "*"
 gspread = "*"
 oauth2client = "*"
 pydrive2 = "*"
+ipython = "*"
 
 [dev-packages]
