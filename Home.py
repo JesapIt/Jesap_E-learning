@@ -5,6 +5,7 @@ from gspread import Cell
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 import pandas as pd
+import streamlit as st
 
 st.set_page_config(layout="wide")
 st.title("Scegli la sezione desiderata dalla barra laterale")
@@ -53,6 +54,25 @@ for i in range(5):
 
 df = pd.DataFrame(matrix, columns=[values[0], values[1], values[2], values[3]])
 st.write(df)
+
+
+# Define two columns
+col1, col2, col3 = st.columns(3)
+
+# Add markdown to the second column
+with col3:
+    st.markdown("""
+        <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        </head>
+        <body><br><br>
+        <div class="mioDiv" style="text-align: left;">
+        <img src="https://jesap.it/wp-content/uploads/2023/03/4-scaled.webp" width="250">
+        <p>Powered by <a href="https://jesap.it">Jesap Consulting</a></p>
+        <p>Per assistenza tecnica: <a href="it@jesap.it">it@jesap.it</a></p>
+        </div>
+        </body>
+        """, unsafe_allow_html=True)
 
 
 

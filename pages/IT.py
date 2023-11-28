@@ -39,9 +39,12 @@ worksheet = sht.sheet1
 data = worksheet.get_all_values()
 
 for row in data:
-    if row[1].lower() == servizio.lower() and row[2] == "tenere":
-        st.markdown(f"<h1 style='text-align: center; font-size: 36px;'>{row[0]}</h1>", unsafe_allow_html=True)
-        st.video(row[4])
+    if len(row) >= 3 and row[1].lower() == servizio.lower() and row[2] == "tenere":
+        st.markdown(f"<h1 style='text-align: center; font-size: 36px; color: #983c8e;'>{row[0]}</h1>", unsafe_allow_html=True)
+        if(row[4] == ""):
+            st.error("La formazione " +  row[0] + " non è ancora disponibile")
+        else:
+            st.video(row[4])
         
 
 
