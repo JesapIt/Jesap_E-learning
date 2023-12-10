@@ -12,7 +12,10 @@ import requests
 import streamlit as st
 import google.auth
 from google_auth_oauthlib.flow import InstalledAppFlow
+from Home import matrix
 
+# Condividi matrix della Home.py con AUDIT.py e altri per creare bottoni
+print(matrix)
 servizi = ["Automazione dei processi", "Business Intelligence"]
 servizio = st.selectbox("Scegli il servizio specifico", servizi)
 
