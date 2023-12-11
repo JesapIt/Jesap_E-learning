@@ -8,8 +8,8 @@ import pandas as pd
 import streamlit as st
 
 st.set_page_config(layout="wide")
-st.title("Scegli la sezione desiderata dalla barra laterale")
-st.write("Ogni colonna presenta i servizi offerti in tale ambito")
+st.title("Scegli la sezione desiderata dalla barra laterale 🗺️")
+st.write("Ogni colonna presenta i servizi offerti per la sezione selezionata.")
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/spreadsheets']
