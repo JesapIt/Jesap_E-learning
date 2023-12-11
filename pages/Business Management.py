@@ -5,9 +5,14 @@ from gspread import Cell
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 import IPython
+from Home import matrix
 
-servizi = ["Analisi di mercato", "Consulenza strategica", "Business plan", "Analisi finanziaria", "Consulenza Bandi", "Lead Generation"]
-servizio = st.selectbox("Scegli il servizio specifico", servizi)
+
+servizi = [row[0] for row in matrix if row[0] != '']
+st.write("Scegli il servizio specifico cliccando sul bottone corrispondente")
+
+# servizi = ["Analisi di mercato", "Consulenza strategica", "Business plan", "Analisi finanziaria", "Consulenza Bandi", "Lead Generation"]
+# servizio = st.selectbox("Scegli il servizio specifico", servizi)
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/spreadsheets']
@@ -38,13 +43,24 @@ sht = client.open_by_url(link_data)
 worksheet = sht.sheet1
 data = worksheet.get_all_values()
 
-for row in data:
-    if len(row) >= 3 and row[1].lower() == servizio.lower() and row[2] == "tenere":
-        st.markdown(f"<h1 style='text-align: center; font-size: 36px; color: #983c8e;'>{row[0]}</h1>", unsafe_allow_html=True)
-        if(row[4] == ""):
-            st.error("La formazione " +  row[0] + " non è ancora disponibile")
-        else:
-            st.video(row[4])
+# Create a container to hold the buttons in a single row
+button_container = st.columns(len(servizi))
+
+# Create buttons for each service inside the container
+for index, servizio in enumerate(servizi):
+    button_key = f"{servizio}_{index}"  # Unique key for each button
+    if button_container[index].button(servizio, key=button_key):
+        # Your existing code for handling the selected service goes here
+        # For example, you can replace the st.selectbox code with your logic
+        st.title(f"{servizio}")
+
+        for row in data:
+            if len(row) >= 3 and row[1].lower() == servizio.lower() and row[2] == "tenere":
+                st.markdown(f"<h1 style='text-align: center; font-size: 36px; color: #983c8e;'>{row[0]}</h1>", unsafe_allow_html=True)
+                if(row[4] == ""):
+                    st.error("La formazione " +  row[0] + " non è ancora disponibile")
+                else:
+                    st.video(row[4])
         
 
 
