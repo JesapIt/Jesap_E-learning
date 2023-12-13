@@ -14,7 +14,7 @@ if "selected_service" not in st.session_state:
 if "current_video_index" not in st.session_state:
     st.session_state["current_video_index"] = 0
 
-servizi = [row[1] for row in matrix if row[0] != '']
+servizi = [row[1] for row in matrix if row[1] != '']
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/spreadsheets']
