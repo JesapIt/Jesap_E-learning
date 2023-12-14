@@ -4,6 +4,9 @@ import gspread
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from Home import matrix
+import pandas as pd
+
+SECTOR_INDEX = 3
 
 # Initialize session state
 if "target_index" not in st.session_state:
@@ -16,7 +19,7 @@ if "current_video_index" not in st.session_state:
 print("Target index: ", st.session_state.target_index)
 
 
-servizi = [row[3] for row in matrix if row[3] != '']
+servizi = [row[SECTOR_INDEX] for row in matrix if row[3] != '' or row[SECTOR_INDEX] != '']
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive',
          'https://www.googleapis.com/auth/drive.file', 'https://www.googleapis.com/auth/spreadsheets']
@@ -53,23 +56,6 @@ st.write("*Scegli il servizio specifico cliccando sul bottone corrispondente*")
 button_container = st.columns(len(servizi))
 st.markdown("---")
 
-# Create next and previous buttons
-st.write("*Clicca su questi bottoni per navigare tra i video*")
-button_container2 = st.columns(2)  # Create a container with 2 columns
-
-prev_button = button_container2[0].button("Precedente ⏮️")
-next_button = button_container2[1].button("Successivo ⏭️")
-
-if prev_button:
-    st.session_state.current_video_index -= 1
-    if st.session_state.current_video_index < 0:
-        st.session_state.current_video_index = 0
-    st.experimental_rerun()
-
-if next_button:
-    st.session_state.current_video_index += 1
-    st.experimental_rerun()
-
 # Create buttons for each service inside the container
 for index, servizio in enumerate(servizi):
     button_key = f"{servizio}_{index}"  # Unique key for each button
@@ -78,7 +64,46 @@ for index, servizio in enumerate(servizi):
         st.session_state.current_video_index = 0
         st.experimental_rerun()
 
-st.markdown("---")
+if(st.session_state.selected_service != None):
+    # Create next and previous buttons
+    st.write("*Clicca su questi bottoni per navigare tra i video*")
+
+    button_container2 = st.columns(4)
+
+    prev_button = button_container2[0].button("Precedente ⏮️")
+    next_button = button_container2[1].button("Successivo ⏭️")
+
+    if prev_button:
+        st.session_state.current_video_index -= 1
+        if st.session_state.current_video_index < 0:
+            st.session_state.current_video_index = 0
+        st.experimental_rerun()
+
+    if next_button:
+        st.session_state.current_video_index += 1
+        st.experimental_rerun()
+
+    # Button and input to jump to a specific video
+    st.session_state.videos_map = {}
+    num_videos = 0
+    for row in data:
+        if st.session_state.selected_service != None and len(row) >= 3 and row[1].lower() == st.session_state.selected_service.lower() and row[2] == "tenere":
+            num_videos += 1
+            st.session_state.videos_map[num_videos] = row[0]
+
+    pd.set_option('display.max_colwidth', None)
+    st.session_state.videos_df = pd.DataFrame(st.session_state.videos_map.items(), columns=["Numero", "Formazione"])
+    st.write(st.session_state.videos_df)
+
+    input_index = button_container2[2].number_input("Inserisci l'indice del video", min_value = 1, max_value = num_videos)
+    st.session_state.target_index = input_index - 1
+    jump_button = button_container2[3].button("Vai al video ⏯️")
+
+    if jump_button:
+        st.session_state.current_video_index = st.session_state.target_index
+        st.experimental_rerun()
+
+    st.markdown("---")
 
 # Display video for the selected service and current video index
 selected_service = st.session_state.selected_service
